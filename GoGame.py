@@ -22,3 +22,6 @@ class GoGame(Game):
 
     def getBoardSize(self):
         return(self.n, self.n)
+    
+    def getActionSize(self):
+        return self.n*self.n
