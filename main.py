@@ -3,3 +3,4 @@ from GoGame import GoGame
 g=GoGame(2)
 print(g.n)
 print("check")
+print("123")
