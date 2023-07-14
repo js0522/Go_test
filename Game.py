@@ -3,8 +3,15 @@ class Game():
     def __init__(self,n):
         pass
 
-    def initBoard(self):
+    def getInitBoard(self):
         pass
 
     def getBoardSize(self):
+        pass
+
+    def getActionSize(self):
+        pass
+
+    def getCanonicalForm(self, board, player):
+        # return state if player==1, else return -state if player==-1
         pass

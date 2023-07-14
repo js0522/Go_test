@@ -16,12 +16,16 @@ class GoGame(Game):
     def __init__(self, n):
         self.n=n
 
-    def InitBoard(self):
+    def getInitBoard(self):
         self.b=Board(self.n)
-        self.board=np.array(self.b.pieces)
+        return np.array(self.b.pieces)
 
     def getBoardSize(self):
         return(self.n, self.n)
     
     def getActionSize(self):
         return self.n*self.n
+   
+    def getCanonicalForm(self, board, player):
+        # return state if player==1, else return -state if player==-1
+        return player*board

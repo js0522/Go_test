@@ -11,9 +11,9 @@ args=dotdict({'cuda':torch.cuda.is_available(),
 
 class Net(NeuralNet):
     def __init__(self,game):
-        self.nnet=TrainNet(game,args)
+        self.self_net=TrainNet(game,args)
         self.board_x,self.board_y=game.getBoardSize()
         self.action_size=game.getActionSize()
 
         if args.cuda:
-            self.nnet.cuda()
+            self.self_net.cuda()
