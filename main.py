@@ -8,6 +8,7 @@ args = dotdict({'numIters':10,
                 'maxlenOfQueue':100000,
                 'numEps':100,
                 'tempThreshold':4,
+                'numMCTSSims':25,
                 })
 log=logging.getLogger(__name__)
 log.setLevel(logging.INFO)

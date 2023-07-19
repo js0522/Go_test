@@ -15,3 +15,9 @@ class Game():
     def getCanonicalForm(self, board, player):
         # return state if player==1, else return -state if player==-1
         pass
+
+    def stringRepresentation(self, board):
+        pass
+
+    def getGameEnded(self, board, player):
+        pass

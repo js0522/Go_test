@@ -40,5 +40,5 @@ class Coach():
             canonicalBoard=self.game.getCanonicalForm(board,self.player)
             temp=int(episodeStep<self.args.tempThreshold)
 
-            #pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
+            pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
 
