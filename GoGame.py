@@ -24,7 +24,7 @@ class GoGame(Game):
         return(self.n, self.n)
     
     def getActionSize(self):
-        return self.n*self.n
+        return self.n*self.n+1
    
     def getCanonicalForm(self, board, player):
         # return state if player==1, else return -state if player==-1
@@ -45,3 +45,42 @@ class GoGame(Game):
         if b.countArea(player) > 0:
             return 1
         return -1
+    
+    def getNextState(self, board, player, action):
+        if action == self.n*self.n:
+            return (board, -player)
+        
+        b=Board(self.n)
+        b.pieces = np.copy(board)
+        move=(int(action/self.n), action%self.n)
+        b.execute_move(move, player)
+        return (b.pieces, -player)
+    
+    def getValidMoves(self, board, player):
+        # return a fixed size binary vector
+        valids = [0]*self.getActionSize()
+        b = Board(self.n)
+        b.pieces = np.copy(board)
+        legalMoves =  b.get_legal_moves(player)
+        if len(legalMoves)==0:
+            valids[-1]=1
+            return np.array(valids)
+        for x, y in legalMoves:
+            valids[self.n*x+y]=1
+        return np.array(valids)
+    
+    def getSymmetries(self, board, pi):
+        # mirror, rotational
+        assert(len(pi) == self.n**2+1)  # 1 for pass
+        pi_board = np.reshape(pi[:-1], (self.n, self.n))
+        l = []
+
+        for i in range(1, 5):
+            for j in [True, False]:
+                newB = np.rot90(board, i)
+                newPi = np.rot90(pi_board, i)
+                if j:
+                    newB = np.fliplr(newB)
+                    newPi = np.fliplr(newPi)
+                l += [(newB, list(newPi.ravel()) + [pi[-1]])]
+        return l
