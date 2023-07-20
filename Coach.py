@@ -46,7 +46,12 @@ class Coach():
             for b, p in sym:
                 trainExamples.append([b, self.curPlayer, p, None])
             
-            action = np.random.choice(len(pi),p=pi)
+            while True:
+                action = np.random.choice(len(pi),p=pi)
+                move=(int(action/self.game.n), action%self.game.n)
+                if self.game.b.is_move_legal(self.curPlayer, move):
+                    break
+
             board, self.curPlayer = self.game.getNextState(board, self.curPlayer, action)
 
             r = self.game.getGameEnded(board, self.curPlayer)

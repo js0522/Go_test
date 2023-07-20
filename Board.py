@@ -57,7 +57,8 @@ class Board():
         return False
 
     def is_move_legal(self, color, position):
-        self.qi=[position]
+        self.qi=[]
+        self.qi.append(position)
         self.history=[]
         self.check_qi(color,position)
         if(len(self.qi)>1):
@@ -72,7 +73,10 @@ class Board():
 
     def is_chi(self, color, position):
         
+        
         x,y=position
+        if((x<0 or x>=self.n) or (y<0 or y>=self.n)):
+            return False
         up=(x,y+1)
         down=(x,y-1)
         left=(x-1,y)
@@ -137,17 +141,21 @@ class Board():
         
     def execute_move(self, move, color):
         x,y=move
-        
-        if (self.is_chi(color,move)):
+        up=(x,y+1)
+        down=(x,y-1)
+        left=(x-1,y)
+        right=(x+1,y)
+
+        if (self.is_chi(color,up)):
             for a,b in self.history:
                 self.pieces[a][b]=0
-        if (self.is_chi(color,move)):
+        if (self.is_chi(color,down)):
             for a,b in self.history:
                 self.pieces[a][b]=0
-        if (self.is_chi(color,move)):
+        if (self.is_chi(color,left)):
             for a,b in self.history:
                 self.pieces[a][b]=0
-        if (self.is_chi(color,move)):
+        if (self.is_chi(color,right)):
             for a,b in self.history:
                 self.pieces[a][b]=0
         
