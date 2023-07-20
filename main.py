@@ -10,6 +10,7 @@ args = dotdict({'numIters':10,
                 'tempThreshold':4,
                 'numMCTSSims':25,
                 'cpuct': 1,
+                'depth':19
                 })
 log=logging.getLogger(__name__)
 log.setLevel(logging.INFO)

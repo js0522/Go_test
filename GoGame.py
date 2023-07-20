@@ -46,6 +46,13 @@ class GoGame(Game):
             return 1
         return -1
     
+    def EndArea(self, board, player):
+        b = Board(self.n)
+        b.pieces=np.copy(board)
+        if b.countArea(player) > 0:
+            return 1
+        return -1
+
     def getNextState(self, board, player, action):
         if action == self.n*self.n:
             return (board, -player)
@@ -62,11 +69,11 @@ class GoGame(Game):
         b = Board(self.n)
         b.pieces = np.copy(board)
         legalMoves =  b.get_legal_moves(player)
-        if len(legalMoves)==0:
-            valids[-1]=1
-            return np.array(valids)
-        for x, y in legalMoves:
-            valids[self.n*x+y]=1
+        
+        valids[-1]=1
+        if len(legalMoves)!=0:   
+            for x, y in legalMoves:
+                valids[self.n*x+y]=1
         return np.array(valids)
     
     def getSymmetries(self, board, pi):

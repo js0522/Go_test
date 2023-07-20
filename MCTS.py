@@ -20,7 +20,8 @@ class MCTS():
 
     def getActionProb(self, canonicalBoard, temp=1):
         for i in range(self.args.numMCTSSims):
-            self.search(canonicalBoard)
+            depth=0
+            self.search(canonicalBoard,depth)
 
         s=self.game.stringRepresentation(canonicalBoard)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
@@ -38,7 +39,10 @@ class MCTS():
         return probs
         
 
-    def search(self, canonicalBoard):
+    def search(self, canonicalBoard, depth):
+        depth+=1
+        if(depth>self.args.depth):
+            return -1
 
         s = self.game.stringRepresentation(canonicalBoard)
         
@@ -86,7 +90,7 @@ class MCTS():
         next_s, next_player=self.game.getNextState(canonicalBoard,1,a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
 
-        v = self.search(next_s)
+        v = self.search(next_s,depth)
 
         if (s,a) in self.Qsa:
             self.Qsa[(s,a)] = (self.Nsa[(s,a)] * self.Qsa[(s,a)] +v) / (self.Nsa[(s, a)] + 1)
