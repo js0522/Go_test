@@ -13,7 +13,7 @@ args=dotdict({'cuda':torch.cuda.is_available(),
               'dropout':0.3,
               'lr': 0.001,
               'epochs': 10,
-              'batch_size': 64,
+              'batch_size': 32,
               })
 
 

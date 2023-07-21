@@ -19,7 +19,7 @@ class Coach():
         self.args=args
         self.mcts = MCTS(self.game, self.self_net, self.args)
         self.trainExampleHistory=[]
-        self.skipFirstSelfPlay=False
+        self.skipFirstSelfPlay=True
         
     def learn(self):
 

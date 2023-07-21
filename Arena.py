@@ -43,7 +43,7 @@ class Arena():
         it = 0
         while self.game.getGameEnded(board, curPlayer) == 0:
             if it>20:
-                winner=curPlayer* self.game.EndArea(board,curPlayer)
+                winner=self.game.EndArea(board,1)
                 return winner
 
             it += 1

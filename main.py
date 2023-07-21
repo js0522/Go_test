@@ -6,14 +6,14 @@ import logging
 args = dotdict({'numIters':10,
                 'numGame':20,
                 'maxlenOfQueue':100000,
-                'numEps':10,
+                'numEps':20,
                 'tempThreshold':4,
                 'numMCTSSims':10,
                 'cpuct': 1,
                 'depth':19,
                 'checkpoint': './temp/',
                 'numItersForTrainExamplesHistory':10,
-                'arenaCompare': 20,
+                'arenaCompare': 40,
                 'updateThreshold':0.55
                 })
 log=logging.getLogger(__name__)
