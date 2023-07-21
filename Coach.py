@@ -5,7 +5,7 @@ from collections import deque
 from tqdm import tqdm
 import os
 from pickle import Pickler, Unpickler
-
+from random import shuffle
 
 log=logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -37,8 +37,26 @@ class Coach():
                 log.warning(f"remove oldest entry")
                 self.trainExampleHistory.pop(0)
 
-            self.saveTranExamples(i-1)    
-    
+            self.saveTranExamples(i-1)  
+
+            trainExamples=[]
+            for e in self.trainExampleHistory:
+                trainExamples.extend(e)
+            shuffle(trainExamples)
+
+            self.self_net.save_checkpoint(folder=self.args.checkpoint, filename='temp.pth.tar')
+            self.oppo_net.load_checkpoint(folder=self.args.checkpoint, filename='temp.pth.tar')
+
+            pmcts = MCTS(self.game, self.oppo_net, self.args)
+            self.self_net.train(trainExamples)
+
+            nmcts = MCTS(self.game, self.self_net, self.args)
+
+            log.info('PITTING AGAINST PREVIOUS VERSION')
+            arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
+                          lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
+            pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
+            
     
     def executeEpisode(self):
         trainExamples=[]
