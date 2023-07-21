@@ -4,13 +4,17 @@ from Net import Net
 from Coach import Coach
 import logging
 args = dotdict({'numIters':10,
-                'numGame':100,
+                'numGame':20,
                 'maxlenOfQueue':100000,
-                'numEps':100,
+                'numEps':10,
                 'tempThreshold':4,
-                'numMCTSSims':25,
+                'numMCTSSims':10,
                 'cpuct': 1,
-                'depth':19
+                'depth':19,
+                'checkpoint': './temp/',
+                'numItersForTrainExamplesHistory':10,
+                'arenaCompare': 20,
+                'updateThreshold':0.55
                 })
 log=logging.getLogger(__name__)
 log.setLevel(logging.INFO)

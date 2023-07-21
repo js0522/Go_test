@@ -6,6 +6,7 @@ from tqdm import tqdm
 import os
 from pickle import Pickler, Unpickler
 from random import shuffle
+from Arena import Arena
 
 log=logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -37,7 +38,7 @@ class Coach():
                 log.warning(f"remove oldest entry")
                 self.trainExampleHistory.pop(0)
 
-            self.saveTranExamples(i-1)  
+            self.saveTrainExamples(i-1)  
 
             trainExamples=[]
             for e in self.trainExampleHistory:
@@ -56,7 +57,29 @@ class Coach():
             arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
                           lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
             pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
-            
+            log.info('NEW/PREV WINS : %d / %d ; DRAWS : %d' % (nwins, pwins, draws))
+
+            if float(nwins) / (pwins + nwins) < self.args.updateThreshold:
+                log.info('REJECTING NEW MODEL')
+                self.self_net.load_checkpoint(folder=self.args.checkpoint, filename='temp.pth.tar')
+            else:
+                log.info('ACCEPTING NEW MODEL')
+                self.self_net.save_checkpoint(folder=self.args.checkpoint, filename=self.getCheckpointFile(i))
+                self.self_net.save_checkpoint(folder=self.args.checkpoint, filename='best.pth.tar')
+    
+
+
+    def getCheckpointFile(self, iteration):
+        return 'checkpoint_' + str(iteration) + '.pth.tar'
+
+    def saveTrainExamples(self, iteration):
+        folder = self.args.checkpoint
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        filename = os.path.join(folder, self.getCheckpointFile(iteration) + ".examples")
+        with open(filename, "wb+") as f:
+            Pickler(f).dump(self.trainExampleHistory)
+        f.closed
     
     def executeEpisode(self):
         trainExamples=[]
@@ -96,5 +119,5 @@ class Coach():
             os.makedirs(folder)
         filename = os.path.join(folder, self.getCheckpointFile(iteration) + ".examples")
         with open(filename, "wb+") as f:
-            Pickler(f).dump(self.trainExamplesHistory)
+            Pickler(f).dump(self.trainExampleHistory)
         f.closed
