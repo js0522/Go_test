@@ -13,6 +13,7 @@ class Board():
         count=0
         for y in range(self.n):
             for x in range(self.n):
+                check=self[x][y]
                 if self[x][y]==color:
                     count += 1
                 if self[x][y]==-color:
@@ -23,7 +24,7 @@ class Board():
                         count +=1
                     if num<0:
                         count -=1
-            return count
+        return count
         
     def check_surround(self, position, color):
         x,y=position
